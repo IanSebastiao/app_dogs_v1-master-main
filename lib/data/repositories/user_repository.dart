@@ -17,7 +17,7 @@ class UserRepository {
   Future<bool> emailExists(String email) async {
     final db = await initDb();
     final result =
-        await db.query('pessoas', where: 'email = ?', whereArgs: [email]);
+        await db.query('pessoa', where: 'email = ?', whereArgs: [email]);
     return result.isNotEmpty;
   }
 

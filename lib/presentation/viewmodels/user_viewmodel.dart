@@ -13,7 +13,7 @@ class UserViewmodel {
     if (emailExists) {
       final db = await repository.initDb();
       final result =
-          await db.query('pessoas', where: 'email = ?', whereArgs: [email]);
+          await db.query('pessoa', where: 'email = ?', whereArgs: [email]);
       final idPessoa = result[0]['id'] as int;
 
       final userAlreadyExists = await repository.userExistsByIdPessoa(idPessoa);

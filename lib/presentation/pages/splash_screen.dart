@@ -1,4 +1,4 @@
-import 'package:app_dogs/presentation/pages/home_page.dart';
+import 'package:app_dogs/presentation/user/login_page.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -20,7 +20,7 @@ class SplashScreenState extends State<SplashScreen> {
 
     if (mounted) {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const HomePage()),
+        MaterialPageRoute(builder: (context) => const LoginPage()),
       );
     }
   }

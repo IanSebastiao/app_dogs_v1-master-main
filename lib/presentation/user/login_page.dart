@@ -1,48 +1,46 @@
 import 'package:app_dogs/data/repositories/user_repository.dart';
-import 'package:app_dogs/presentation/user/login_page.dart';
+import 'package:app_dogs/presentation/pages/home_page.dart';
+import 'package:app_dogs/presentation/user/register_page.dart';
 import 'package:app_dogs/presentation/viewmodels/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
-  final TextEditingController emailController = TextEditingController();
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController usuarioController = TextEditingController();
   final TextEditingController senhaController = TextEditingController();
-  final TextEditingController confirmSenhaController = TextEditingController();
   final UserViewmodel userViewmodel = UserViewmodel(UserRepository());
 
   final _formKey = GlobalKey<FormState>();
 
-  // Função de registro
-  registerUser() async {
+  // Função de Login
+  loginUser() async {
     if (_formKey.currentState?.validate() ?? false) {
-      final email = emailController.text;
       final usuario = usuarioController.text;
       final senha = senhaController.text;
 
-      final message = await userViewmodel.registerUser(email, usuario, senha);
-
+      String message = "";
+      final login = await userViewmodel.loginUser(usuario, senha);
+      if (login) {
+        message = "Login Efetuado com Sucesso.";
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => (const HomePage())),
+        );
+      } else {
+        message = "Erro ao fazer login.";
+      }
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(message),
           backgroundColor:
               message.contains("Sucesso") ? Colors.green : Colors.red,
         ));
-
-        if (message.contains("Sucesso")) {
-          // Navegar para a tela de login ou página principal
-          // Substitua loginPage com a sua tela de login
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginPage()),
-          );
-        }
       }
     }
   }
@@ -51,7 +49,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cadastro de Usuário'),
+        title: const Text('Login de Usuário'),
         backgroundColor: Colors.blue,
       ),
       body: Padding(
@@ -62,23 +60,6 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              // Campo de E-mail
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'E-mail',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira um e-mail';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              // Campo de Nome de Usuário
               TextFormField(
                 controller: usuarioController,
                 decoration: const InputDecoration(
@@ -113,48 +94,29 @@ class _RegisterPageState extends State<RegisterPage> {
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
-              // Campo de Confirmação de Senha
-              TextFormField(
-                controller: confirmSenhaController,
-                obscureText: true, // Ocultar a senha enquanto digita
-                decoration: const InputDecoration(
-                  labelText: 'Confirme a Senha',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.text,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, confirme a senha';
-                  }
-                  if (value != senhaController.text) {
-                    return 'As senhas não coincidem';
-                  }
-                  return null;
-                },
-              ),
               const SizedBox(height: 20),
-              // Botão de Registro
+              // Botão de Login
               ElevatedButton(
-                onPressed: registerUser,
+                onPressed: loginUser,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: const Text('Cadastrar'),
+                child: const Text('Entrar'),
               ),
               const SizedBox(height: 16),
-              // Link para a tela de login, caso o usuário já tenha uma conta
+              // Link para a tela de cadastro, caso o usuário não tenha uma conta
               TextButton(
                 onPressed: () {
-                  // Navegar para a tela de login
-                  // Substitua loginPage com a sua tela de login
+                  // Navegar para a tela de registro
+                  // Exemplo (substitua RegisterPage com a sua tela de registro):
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const RegisterPage()),
                   );
                 },
-                child: const Text('Já tem uma conta? Faça login'),
+                child: const Text('Não tem uma conta? Cadastre-se'),
               ),
             ],
           ),
