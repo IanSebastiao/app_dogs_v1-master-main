@@ -24,23 +24,19 @@ class _LoginPageState extends State<LoginPage> {
       final usuario = usuarioController.text;
       final senha = senhaController.text;
 
-      String message = "";
-      final login = await userViewmodel.loginUser(usuario, senha);
-      if (login) {
-        message = "Login Efetuado com Sucesso.";
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => (const HomePage())),
-        );
-      } else {
-        message = "Erro ao fazer login.";
-      }
+      final loginSuccess = await userViewmodel.loginUser(usuario, senha);
+
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(message),
-          backgroundColor:
-              message.contains("Sucesso") ? Colors.green : Colors.red,
-        ));
+        if (loginSuccess) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Usuário ou senha incorreto.')),
+          );
+        }
       }
     }
   }

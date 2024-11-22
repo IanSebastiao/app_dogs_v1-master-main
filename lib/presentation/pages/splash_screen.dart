@@ -16,7 +16,7 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _navigateToHome() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 3));
 
     if (mounted) {
       Navigator.of(context).pushReplacement(
@@ -47,6 +47,10 @@ class SplashScreenState extends State<SplashScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            SizedBox(height: 10),
+            CircularProgressIndicator(
+              color: Colors.white,
+            )
           ],
         ),
       ),

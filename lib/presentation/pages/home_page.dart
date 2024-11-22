@@ -1,6 +1,7 @@
 import 'package:app_dogs/presentation/pages/Dogs/dog_page.dart';
 import 'package:app_dogs/presentation/pages/main_home_page.dart';
 import 'package:app_dogs/presentation/pages/pessoas/pessoa_page.dart';
+import 'package:app_dogs/presentation/user/login_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -76,6 +77,14 @@ class _HomePageState extends State<HomePage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const PessoaPage()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.exit_to_app, color: Colors.teal),
+              title: const Text('Sair'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()));
               },
             ),
           ],
